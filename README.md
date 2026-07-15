@@ -254,8 +254,7 @@ If you use this repository in your research, please cite the associated publicat
 ```text
 Pavan Kumar Manam,
 Ground Motion Model for Acceleration Response Spectra using
-Conditional Generative Adversarial Network,
-Indian Institute of Technology Madras.
+Conditional Generative Adversarial Network.
 ```
 
 ---
@@ -264,7 +263,7 @@ Indian Institute of Technology Madras.
 
 **Pavan Kumar Manam**
 
-Indian Institute of Technology Madras
+
 
 📧 manamkeerthipavankumar@gmail.com
 
