@@ -43,6 +43,7 @@ The proposed framework employs a **Conditional Generative Adversarial Network (C
   <img src="images/cgan_workflow.png" width="90%">
 </p>
 
+
 ### Generator
 
 The Generator receives:
@@ -252,7 +253,6 @@ Pavan Kumar Manam
 Ground Motion Model for Acceleration Response Spectra
 using Conditional Generative Adversarial Network (CGAN)
 
-Indian Institute of Technology Madras
 ```
 
 ---
@@ -261,7 +261,6 @@ Indian Institute of Technology Madras
 
 **Pavan Kumar Manam**
 
-Indian Institute of Technology Madras
 
 📧 **manamkeerthipavankumar@gmail.com**
 
