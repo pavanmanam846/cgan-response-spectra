@@ -8,6 +8,10 @@
 
 </p>
 
+<p align="center">
+  <img src="images/project_overview.png" width="100%">
+</p>
+
 ---
 
 ## Overview
@@ -20,60 +24,53 @@ The framework provides a fast and flexible surrogate model suitable for seismic 
 
 ---
 
-# Project Overview
+## Key Features
 
-<p align="center">
-<img src="images/project_overview.png" width="950">
-</p>
-
-### Key Features
-
-- Predicts earthquake acceleration response spectra using Conditional GANs
-- Incorporates seven earthquake and site-specific conditional variables
-- Generates stochastic response spectra through adversarial learning
-- Produces uncertainty estimates using Monte Carlo sampling
-- Suitable for probabilistic seismic hazard assessment
+- Deep learning-based prediction of earthquake response spectra
+- Conditional Generative Adversarial Network (CGAN) architecture
+- Seven earthquake and site-specific conditioning variables
+- Monte Carlo sampling for uncertainty estimation
+- Comparison of predicted and recorded response spectra
+- PyTorch implementation for training and deployment
 
 ---
 
-# Conditional GAN Architecture
+## Conditional GAN Architecture
+
+The proposed framework employs a **Conditional Generative Adversarial Network (CGAN)** consisting of two competing neural networks trained simultaneously through adversarial learning.
 
 <p align="center">
-<img src="images/cgan_workflow.png" width="1000">
+  <img src="images/cgan_workflow.png" width="90%">
 </p>
 
-The proposed model consists of two competing neural networks:
+### Generator
 
-## Generator
-
-The Generator receives
+The Generator receives:
 
 - Random Gaussian noise
-- Conditional earthquake parameters
+- Earthquake conditional parameters
 
-and produces synthetic acceleration response spectra.
+and generates synthetic acceleration response spectra.
 
-Its objective is to generate spectra that closely resemble recorded observations.
+Its objective is to learn the underlying distribution of recorded spectra while producing realistic synthetic samples.
 
----
+### Discriminator
 
-## Discriminator
-
-The Discriminator receives
+The Discriminator receives:
 
 - Recorded response spectra
 - Generated response spectra
 - Corresponding conditional variables
 
-and predicts whether the input spectrum is **real** or **synthetic**.
+and predicts whether the supplied spectra are **real** or **synthetic**.
 
-The generator and discriminator are trained simultaneously through an adversarial minimax optimization process until the generated spectra become statistically indistinguishable from recorded data.
+During training, the Generator continuously improves by attempting to fool the Discriminator, while the Discriminator learns to distinguish generated spectra from recorded data. The adversarial training converges when the generated spectra become statistically indistinguishable from real observations.
 
 ---
 
-# Conditional Input Variables
+## Conditional Input Variables
 
-The model conditions the generated response spectra using the following parameters.
+The CGAN conditions the generated response spectra using the following earthquake and site parameters.
 
 | Variable | Description |
 |-----------|-------------|
@@ -87,18 +84,16 @@ The model conditions the generated response spectra using the following paramete
 
 ---
 
-# Repository Structure
+## Repository Structure
 
-```
-CGAN-Response-Spectra
-│
+```text
+.
 ├── complete_model.py
 ├── CGAN_under_deployment.py
 ├── plot_response_spectra_grid.py
 ├── final_data.csv
 ├── requirements.txt
 ├── README.md
-│
 └── images
     ├── project_overview.png
     ├── cgan_workflow.png
@@ -107,7 +102,7 @@ CGAN-Response-Spectra
 
 ---
 
-# Installation
+## Installation
 
 Clone the repository
 
@@ -117,17 +112,21 @@ git clone https://github.com/pavanmanam846/cgan-response-spectra.git
 cd cgan-response-spectra
 ```
 
-Install the required dependencies
+Install the required packages
 
 ```bash
 pip install -r requirements.txt
 ```
 
+Alternatively,
+
+```bash
+pip install numpy pandas matplotlib seaborn scipy scikit-learn torch torchvision
+```
+
 ---
 
-# Required Libraries
-
-The project requires the following Python packages.
+## Required Libraries
 
 ```python
 import numpy as np
@@ -141,11 +140,11 @@ from scipy.stats import skew
 
 from sklearn.metrics import r2_score
 
-import warnings
-warnings.filterwarnings("ignore")
-
 import math
 import csv
+import warnings
+
+warnings.filterwarnings("ignore")
 
 import torch
 import torch.nn as nn
@@ -159,116 +158,117 @@ from torchvision.utils import make_grid
 
 ---
 
-# Model Training
+## Model Training
 
-Run
+Run the training pipeline
 
 ```bash
 python complete_model.py
 ```
 
-This script
+This script:
 
-- Loads and preprocesses the dataset
-- Applies maximum absolute scaling
-- Builds the Generator and Discriminator
+- Loads the earthquake response spectra dataset
+- Performs preprocessing and normalization
+- Builds the Generator and Discriminator networks
 - Trains the Conditional GAN
 - Saves the trained model weights
-- Plots Generator and Discriminator losses
+- Plots Generator and Discriminator training losses
 
-For improved training stability, GPU acceleration is recommended.
+For faster convergence and improved training performance, GPU acceleration is recommended.
 
 ---
 
-# Model Deployment
+## Model Deployment
 
-After training,
+Once the Generator has been trained,
 
 ```bash
 python CGAN_under_deployment.py
 ```
 
-The deployment script
+This deployment script
 
 - Loads the trained Generator
-- Generates response spectra conditioned on user inputs
-- Produces multiple stochastic realizations
-- Computes the mean prediction and uncertainty band
-- Compares predictions with recorded spectra
+- Accepts earthquake conditional parameters
+- Generates multiple stochastic response spectra
+- Computes the mean prediction
+- Computes prediction uncertainty
+- Compares predicted and recorded spectra
 
 ---
 
-# Model Validation
+## Model Validation
 
-```bash
-python plot_response_spectra_grid.py
-```
-
-This script generates comparison plots between recorded response spectra and CGAN predictions.
+The prediction capability of the trained CGAN is evaluated by comparing generated response spectra with recorded earthquake observations.
 
 <p align="center">
-<img src="images/response_spectra_grid.png" width="1000">
+  <img src="images/response_spectra_grid.png" width="100%">
 </p>
 
-The figure illustrates
+The comparison plots present:
 
 - Recorded Response Spectra
 - Mean CGAN Prediction
 - Prediction Standard Deviation
 
-for representative earthquake records.
-
-The close agreement demonstrates that the proposed CGAN successfully captures both the amplitude and variability of recorded ground motions.
+The close agreement between predicted and recorded spectra demonstrates the capability of the proposed model to reproduce both the spectral characteristics and variability of earthquake ground motions.
 
 ---
 
-# Applications
+## Applications
 
-The developed framework can be applied to
+This framework can be applied to:
 
 - Ground Motion Simulation
 - Earthquake Engineering
-- Performance-Based Design
+- Structural Dynamics
+- Performance-Based Earthquake Engineering (PBEE)
 - Probabilistic Seismic Hazard Assessment (PSHA)
 - Structural Reliability Analysis
 - Seismic Risk Assessment
 
 ---
 
-# Future Improvements
+## Future Work
 
-Future developments may include
+Potential extensions include:
 
-- Physics-informed CGANs
+- Physics-informed Conditional GANs
 - Multi-component ground motion prediction
-- Transfer learning for regional datasets
-- Bayesian uncertainty estimation
+- Bayesian uncertainty quantification
+- Transfer learning for regional seismic datasets
 - Real-time response spectrum generation
 
 ---
 
-# Citation
+## Citation
 
 If you use this repository in your research, please cite the associated publication.
 
 ```text
-Pavan Kumar Manam,
-Ground Motion Model for Acceleration Response Spectra using
-Conditional Generative Adversarial Network.
+Pavan Kumar Manam
+
+Ground Motion Model for Acceleration Response Spectra
+using Conditional Generative Adversarial Network (CGAN)
+
+Indian Institute of Technology Madras
 ```
 
 ---
 
-# Author
+## Author
 
 **Pavan Kumar Manam**
 
+Indian Institute of Technology Madras
 
-
-📧 manamkeerthipavankumar@gmail.com
+📧 **manamkeerthipavankumar@gmail.com**
 
 ---
 
-# License
+## License
 
-This repository is intended for academic and research purposes.
+This repository is released for **academic and research purposes**.
+
+If you use this work in your research, please cite the corresponding publication.
